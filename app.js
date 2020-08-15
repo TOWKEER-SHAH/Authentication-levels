@@ -13,11 +13,13 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 mongoose.connect("mongodb://localhost:27017/userDB", { useNewUrlParser: true,  useUnifiedTopology: true });
- const userSchema={
+ const userSchema= new mongoose.Schema ({
    email:String,
    password:String
- };
+ });
 
+ const secret= "This is our little secret!"
+ userSchema.plugin(encrypt, {secret:secret, encryptedFields:["password"]});
 
 const User= mongoose.model("User", userSchema);
 
